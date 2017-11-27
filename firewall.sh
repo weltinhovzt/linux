@@ -43,6 +43,13 @@ iptables -t filter -A FORWARD -i enp0s3 -p icmp --icmp-type 0 -s 0/0 -d 10.10.10
 
 }
 
+internet(){
+
+sysctl -w net.ipv4.ip_forward=1
+iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o enp0s3 -j MASQUERADE
+
+}
+
 default(){
 
 iptables -t filter -P INPUT DROP
@@ -56,6 +63,7 @@ iniciar(){
 local
 forwarding
 default
+internet
 
 }
 
